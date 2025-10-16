@@ -1,30 +1,92 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Derivative Explorer</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Derivative Analyzer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0077cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #005fa3;
+        }
+        .result {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            white-space: pre-wrap;
+        }
+        img {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-    <h1>📐 Tangent, Normal, Maxima & Curvature</h1>
+    <h1>Derivative Analyzer</h1>
     <form action="/calculate" method="post">
-        <label>Curve Equation (e.g., x**2 + y**2 - 25):</label><br>
-        <input type="text" name="curve"><br><br>
+        <label for="curve">Enter Curve Equation (e.g., x**2 + y**2 - 25):</label>
+        <input type="text" id="curve" name="curve" required>
 
-        <label>x-coordinate:</label><br>
-        <input type="text" name="x"><br><br>
+        <label for="x">Enter x-coordinate:</label>
+        <input type="number" id="x" name="x" step="any" required>
 
-        <label>y-coordinate:</label><br>
-        <input type="text" name="y"><br><br>
+        <label for="y">Enter y-coordinate:</label>
+        <input type="number" id="y" name="y" step="any" required>
 
-        <input type="submit" value="Calculate">
+        <input type="submit" value="Analyze">
     </form>
 
     {% if result %}
-    <div class="output">
-        <h2>Result:</h2>
+    <div class="result">
+        <h2>Results:</h2>
         <pre>{{ result }}</pre>
+    </div>
+    {% endif %}
+
+    {% if graph_generated %}
+    <div>
+        <h2>Graph of Curve:</h2>
+        <img src="{{ url_for('static', filename='graph.png') }}" alt="Curve Graph">
     </div>
     {% endif %}
 </body>
