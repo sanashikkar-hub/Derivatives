@@ -26,7 +26,6 @@ def calculate():
     result = ""
     graph_generated = False
 
-    # Tangent and Normal
     if df_dy_val != 0:
         tangent_slope = -df_dx_val / df_dy_val
         tangent_eq = df_dx_val * (x - x0) + df_dy_val * (y - y0)
@@ -42,7 +41,6 @@ def calculate():
         result += f"Tangent Line: x = {x0}\n"
         result += f"Normal Line: y = {y0}\n"
 
-    # Radius of Curvature
     numerator = (df_dx_val**2 + df_dy_val**2)**(3/2)
     d2f_dx2 = sp.diff(df_dx, x).subs({x: x0, y: y0})
     d2f_dy2 = sp.diff(df_dy, y).subs({x: x0, y: y0})
@@ -58,15 +56,15 @@ def calculate():
 
     result += "\nMaths Microproject by Sai, Kuldeep, Nikhil and Samruddhi"
 
-    # Plotting the implicit curve (circle)
     try:
-        theta = np.linspace(0, 2 * np.pi, 400)
-        r = np.sqrt(25)
-        x_vals = r * np.cos(theta)
-        y_vals = r * np.sin(theta)
+        f_lambdified = sp.lambdify((x, y), curve_eq, "numpy")
+        x_vals = np.linspace(x0 - 10, x0 + 10, 400)
+        y_vals = np.linspace(y0 - 10, y0 + 10, 400)
+        X, Y = np.meshgrid(x_vals, y_vals)
+        Z = f_lambdified(X, Y)
 
-        plt.figure()
-        plt.plot(x_vals, y_vals, label="x² + y² = 25")
+        plt.figure(figsize=(6, 6))
+        plt.contour(X, Y, Z, levels=[0], colors='blue')
         plt.plot(x0, y0, 'ro', label=f"Point ({x0}, {y0})")
         plt.xlabel("x")
         plt.ylabel("y")
@@ -84,4 +82,6 @@ def calculate():
     return render_template("index.html", result=result, graph_generated=graph_generated)
 
 if __name__ == "__main__":
-    app.run(debug=False, host="0.0.0.0", port=5000)
+    import os
+    port = int(os.environ.get("PORT", 8080))
+    app.run(debug=False, host="0.0.0.0", port=port)
