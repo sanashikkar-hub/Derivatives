@@ -1,0 +1,31 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Derivative Explorer</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <h1>📐 Tangent, Normal, Maxima & Curvature</h1>
+    <form action="/calculate" method="post">
+        <label>Curve Equation (e.g., x**2 + y**2 - 25):</label><br>
+        <input type="text" name="curve"><br><br>
+
+        <label>x-coordinate:</label><br>
+        <input type="text" name="x"><br><br>
+
+        <label>y-coordinate:</label><br>
+        <input type="text" name="y"><br><br>
+
+        <input type="submit" value="Calculate">
+    </form>
+
+    {% if result %}
+    <div class="output">
+        <h2>Result:</h2>
+        <pre>{{ result }}</pre>
+    </div>
+    {% endif %}
+</body>
+</html>
